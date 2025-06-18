@@ -107,9 +107,9 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          branch: update-folder-${{ github.run_number }}
+          branch: update-design-tokens-${{ github.run_number }}
           commit-message: "Replace folder lib/design_tokens via workflow"
-          title: "📁 Update folder lib/design_tokens"
+          title: "📁 Update design tokens"
           body: |
             Automated update of design tokens via workflow
             
