@@ -1,10 +1,10 @@
-name: Upload Design Tokens
+name: Replace Folder via Upload
 
 on:
   workflow_dispatch:
     inputs:
       folder-url:
-        description: 'URL to zip file of your folder'
+        description: 'URL to zip file of your folder (supports Google Drive sharing URLs)'
         required: true
 
 jobs:
@@ -56,21 +56,68 @@ jobs:
             exit 1
           fi
           
-          unzip -o uploaded.zip -d extracted
+          echo "ZIP file validated successfully"
 
-      - name: Remove and copy
+      - name: Extract and prepare files
         run: |
+          # Extract the ZIP file
+          unzip -o uploaded.zip -d extracted
+          
+          # Debug: Show what was extracted
+          echo "Contents of extracted directory:"
+          find extracted -type f | head -20
+          
+          # Remove existing design tokens directory
           rm -rf "lib/design_tokens"
+          
+          # Create the target directory
           mkdir -p "lib/design_tokens"
-          mv extracted/* "lib/design_tokens/"
+          
+          # Check if extraction created subdirectories
+          if [ -d "extracted" ]; then
+            # Count files in extracted directory
+            FILE_COUNT=$(find extracted -type f | wc -l)
+            echo "Found $FILE_COUNT files in extracted directory"
+            
+            if [ $FILE_COUNT -eq 0 ]; then
+              echo "No files found in extracted directory"
+              exit 1
+            fi
+            
+            # Move all contents (handle potential nested directories)
+            if [ -n "$(ls -A extracted/)" ]; then
+              cp -r extracted/* "lib/design_tokens/"
+            else
+              echo "Extracted directory is empty"
+              exit 1
+            fi
+          else
+            echo "Extraction failed - no extracted directory found"
+            exit 1
+          fi
+          
+          # Clean up temporary files
+          rm -f uploaded.zip
+          rm -rf extracted
+          
+          # Debug: Show what's in the target directory
+          echo "Contents of lib/design_tokens:"
+          find lib/design_tokens -type f | head -20
 
       - name: Commit folder update
         run: |
           git config user.name "GitHub Action"
           git config user.email "action@users.noreply.github.com"
           git checkout -b update-folder-${{ github.run_number }}
-          git add "lib/design_tokens"
-          git commit -m "Replace folder lib/design_tokens via workflow"
+          
+          # Check if there are any changes to commit
+          if [ -n "$(git status --porcelain lib/design_tokens)" ]; then
+            git add "lib/design_tokens"
+            git commit -m "Replace folder lib/design_tokens via workflow"
+          else
+            echo "No changes detected in lib/design_tokens directory"
+            exit 1
+          fi
         
       - name: Push and create PR
         uses: peter-evans/create-pull-request@v6
