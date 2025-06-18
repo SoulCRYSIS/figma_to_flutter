@@ -104,25 +104,16 @@ jobs:
           echo "Contents of lib/design_tokens:"
           find lib/design_tokens -type f | head -20
 
-      - name: Commit folder update
-        run: |
-          git config user.name "GitHub Action"
-          git config user.email "action@users.noreply.github.com"
-          git checkout -b update-folder-${{ github.run_number }}
-          
-          # Check if there are any changes to commit
-          if [ -n "$(git status --porcelain lib/design_tokens)" ]; then
-            git add "lib/design_tokens"
-            git commit -m "Replace folder lib/design_tokens via workflow"
-          else
-            echo "No changes detected in lib/design_tokens directory"
-            exit 1
-          fi
-        
-      - name: Push and create PR
+      - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
           branch: update-folder-${{ github.run_number }}
-          commit-message: "Replace folder lib/design_tokens"
+          commit-message: "Replace folder lib/design_tokens via workflow"
           title: "📁 Update folder lib/design_tokens"
-          body: "Automated update via workflow"
+          body: |
+            Automated update of design tokens via workflow
+            
+            **Changes:**
+            - Replaced contents of `lib/design_tokens/` directory
+            - Source: ${{ github.event.inputs.folder-url }}
+          delete-branch: true
