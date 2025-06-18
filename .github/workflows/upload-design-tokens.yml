@@ -1,4 +1,4 @@
-name: Replace Folder via Upload
+name: Upload Design Tokens
 
 on:
   workflow_dispatch:
@@ -17,13 +17,52 @@ jobs:
 
       - name: Download folder ZIP
         run: |
-          curl -L "${{ github.event.inputs.folder-url }}" -o uploaded.zip
+          URL="${{ github.event.inputs.folder-url }}"
+          
+          # Check if it's a Google Drive URL and extract file ID
+          if [[ $URL == *"drive.google.com"* ]]; then
+            FILE_ID=$(echo $URL | sed -n 's/.*\/d\/\([a-zA-Z0-9_-]*\).*/\1/p')
+            if [ ! -z "$FILE_ID" ]; then
+              echo "Detected Google Drive URL, using file ID: $FILE_ID"
+              # Use Google Drive direct download URL
+              DOWNLOAD_URL="https://drive.google.com/uc?export=download&id=$FILE_ID"
+              
+              # First attempt - for small files
+              curl -L "$DOWNLOAD_URL" -o uploaded.zip
+              
+              # Check if we got a virus scan warning (large files)
+              if grep -q "Google Drive - Virus scan warning" uploaded.zip 2>/dev/null; then
+                echo "Large file detected, handling virus scan warning..."
+                # Get the confirmation token
+                CONFIRM=$(curl -c cookies.txt -s -L "$DOWNLOAD_URL" | grep -o 'confirm=[^&]*' | head -1)
+                # Download with confirmation
+                curl -L -b cookies.txt "${DOWNLOAD_URL}&${CONFIRM}" -o uploaded.zip
+                rm -f cookies.txt
+              fi
+            else
+              echo "Could not extract file ID from Google Drive URL"
+              exit 1
+            fi
+          else
+            # Regular URL download
+            curl -L "$URL" -o uploaded.zip
+          fi
+          
+          # Verify it's a valid zip file
+          if ! unzip -t uploaded.zip >/dev/null 2>&1; then
+            echo "Downloaded file is not a valid ZIP archive"
+            echo "File size: $(wc -c < uploaded.zip) bytes"
+            echo "File type: $(file uploaded.zip)"
+            exit 1
+          fi
+          
           unzip -o uploaded.zip -d extracted
 
       - name: Remove and copy
         run: |
           rm -rf "lib/design_tokens"
-          mv extracted/* "lib/design_tokens"
+          mkdir -p "lib/design_tokens"
+          mv extracted/* "lib/design_tokens/"
 
       - name: Commit folder update
         run: |
