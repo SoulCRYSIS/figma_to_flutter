@@ -1,0 +1,42 @@
+name: Replace Folder via Upload
+
+on:
+  workflow_dispatch:
+    inputs:
+      folder-url:
+        description: 'URL to zip file of your folder'
+        required: true
+
+jobs:
+  update-folder:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Download folder ZIP
+        run: |
+          curl -L "${{ github.event.inputs.folder-url }}" -o uploaded.zip
+          unzip -o uploaded.zip -d extracted
+
+      - name: Remove and copy
+        run: |
+          rm -rf "lib/design_tokens"
+          mv extracted/* "lib/design_tokens"
+
+      - name: Commit folder update
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@users.noreply.github.com"
+          git checkout -b update-folder-${{ github.run_number }}
+          git add "lib/design_tokens"
+          git commit -m "Replace folder lib/design_tokens via workflow"
+        
+      - name: Push and create PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: update-folder-${{ github.run_number }}
+          commit-message: "Replace folder lib/design_tokens"
+          title: "📁 Update folder lib/design_tokens"
+          body: "Automated update via workflow"
