@@ -1,10 +1,10 @@
-name: Replace Folder via Upload
+name: Update Design Tokens
 
 on:
   workflow_dispatch:
     inputs:
       folder-url:
-        description: 'URL to zip file of your folder (supports Google Drive sharing URLs)'
+        description: 'URL to zip file of your folder'
         required: true
 
 jobs:
