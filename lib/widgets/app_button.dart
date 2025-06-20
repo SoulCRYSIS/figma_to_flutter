@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:figma_to_flutter/design_tokens/figma.dart';
+import 'dot.dart';
 
 /// Generic application button based on Untitled-UI design-tokens.
 ///
@@ -71,13 +72,11 @@ class AppButton extends StatelessWidget {
     final children = <Widget>[];
 
     if (showLeadingDot) {
-      children.add(Container(
-        width: 4,
-        height: 4,
-        margin: EdgeInsets.only(right: dims.gap),
-        decoration: BoxDecoration(
-          color: _ButtonStyleFactory._fgColor(variant),
-          shape: BoxShape.circle,
+      children.add(Padding(
+        padding: EdgeInsets.only(right: dims.gap),
+        child: Dot(
+          color: onPressed == null ? Figma.colorModes.colorsForegroundFgDisabledSubtle : Figma.colorModes.colorsForegroundFgSuccessSecondary,
+          size: DotSize.md,
         ),
       ));
     }
@@ -322,25 +321,5 @@ class _ButtonStyleFactory {
       }
       return BorderSide(color: normal);
     });
-  }
-
-  /// Helper used by the leading‐dot decoration.
-  static Color _fgColor(ButtonVariant variant) {
-    switch (variant) {
-      case ButtonVariant.primary:
-        return Figma.colorModes.componentColorsComponentsButtonsPrimaryButtonPrimaryFg;
-      case ButtonVariant.secondaryGray:
-        return Figma.colorModes.componentColorsComponentsButtonsSecondaryButtonSecondaryFg;
-      case ButtonVariant.secondaryColor:
-        return Figma.colorModes.componentColorsComponentsButtonsSecondaryColorButtonSecondaryColorFg;
-      case ButtonVariant.tertiaryGray:
-        return Figma.colorModes.componentColorsComponentsButtonsTertiaryButtonTertiaryFg;
-      case ButtonVariant.tertiaryColor:
-        return Figma.colorModes.componentColorsComponentsButtonsTertiaryColorButtonTertiaryColorFg;
-      case ButtonVariant.linkGray:
-        return Figma.colorModes.colorsForegroundFgTertiary600;
-      case ButtonVariant.linkColor:
-        return Figma.colorModes.colorsForegroundFgBrandPrimary600;
-    }
   }
 } 

@@ -1,0 +1,138 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Flutter Component Creation Guide
+
+When creating **any** Flutter UI component, follow these comprehensive guidelines to ensure consistency, maintainability, and design system compliance:
+
+## 🎨 Design System Integration
+
+1. **Prefer Design Tokens (fallback to plain values if necessary)**
+   • Use `Figma` helpers when a matching token exists:
+     - Colors: `Figma.colorModes.colorsForegroundFgSuccessPrimary`
+     - Typography: `Figma.typography.textSmMedium`
+     - Spacing: `Figma.spacing.spacingSm`
+     - Border radius: `Figma.radius.radiusSm`
+   • Avoid hard-coded values when an equivalent design token is available; if no suitable token exists or the generated MCP code uses explicit values, plain values are acceptable.
+
+2. **Icon Management**
+   • First check [svg_icons.dart](mdc:lib/icons/svg_icons.dart) and [png_icons.dart](mdc:lib/icons/png_icons.dart)
+   • Use `SvgIcon(SvgIcons.iconName)` for SVG icons
+   • Use `Image.asset(PngIcons.iconName)` for PNG icons
+   • Only add new assets when existing ones don't fit the use case
+
+## 🏗️ Architecture & Structure
+
+3. **Component Hierarchy**
+   • **StatelessWidget** by default - only use StatefulWidget when managing internal state
+   • Create constructor with named parameters and required fields marked appropriately
+   • Use `const` constructor when possible for performance
+
+4. **Naming Conventions**
+   • Component names: `PascalCase` ending with descriptive suffix (e.g., `PrimaryButton`, `ProductCard`, `NavigationDrawer`)
+   • File names: `snake_case` matching component name (e.g., `primary_button.dart`)
+   • Parameters: `camelCase` with clear, descriptive names
+
+5. **Code Organization**
+   ```dart
+   class ComponentName extends StatelessWidget {
+     // Constructor with named parameters
+     const ComponentName({
+       super.key,
+       required this.title,
+       this.onPressed,
+       this.isEnabled = true,
+     });
+
+     // Properties
+     final String title;
+     final VoidCallback? onPressed;
+     final bool isEnabled;
+
+     @override
+     Widget build(BuildContext context) {
+       // Implementation
+     }
+
+     // Private helper methods (if needed)
+     Widget _buildSubComponent() { }
+   }
+   ```
+
+## 📝 Documentation & Context
+
+7. **Required Documentation**
+   • **Figma Reference**: Always include the Figma frame URL or node ID
+   • **Purpose**: Brief description of component's function and usage
+   • **Example Usage**: Code snippet showing typical implementation
+   • **Parameters**: Document all public parameters and their expected values
+
+   ```dart
+   /// A primary action button following the design system guidelines.
+   /// 
+   /// Figma Reference: [Button Component](mdc:figma:/node-id)
+   /// 
+   /// Used for main call-to-action elements throughout the app.
+   /// 
+   /// Example:
+   /// ```dart
+   /// PrimaryButton(
+   ///   title: 'Continue',
+   ///   onPressed: () => _handleContinue(),
+   /// )
+   /// ```
+   class PrimaryButton extends StatelessWidget {
+   ```
+
+## 🔍 Quality Assurance
+
+8. **Before Implementation**
+   • **ASK** if component variants/states are unclear (hover, pressed, disabled, loading)
+   • **VERIFY** responsive behavior requirements
+   • **CONFIRM** interaction patterns and animations
+   • **CHECK** if component needs theming support
+
+9. **Testing Considerations**
+   • Components should be testable in isolation
+   • Avoid tight coupling to specific business logic
+   • Consider edge cases (empty states, long text, different screen sizes)
+
+## ❌ Common Pitfalls to Avoid
+
+- Unnecessarily hard-coding colors, sizes, or spacing values when tokens exist
+- Creating overly complex components that do too many things
+- Ignoring responsive design principles
+- Poor naming that doesn't describe the component's purpose
+- Forgetting to handle loading and error states where applicable
+
+## 📱 Performance & Best Practices
+
+10. **Optimization**
+    • Use `const` constructors and widgets where possible
+    • Avoid unnecessary rebuilds with proper state management
+    • Consider widget size and complexity for performance
+    • Use `RepaintBoundary` for complex custom painted components
+
+Integrate these rules with the rest of the design system guidelines in this file to ensure pixel-perfect, maintainable components.
+
+### 🔖 Quick Token Reference
+
+Design tokens are auto-generated under [lib/design_tokens](mdc:lib/design_tokens).  The most useful entry points are:
+
+• **Colors**  
+  – Semantic: `Figma.colorModes.<tokenName>` (e.g. `Figma.colorModes.colorsForegroundFgSuccessPrimary`)  
+  – Primitive: `Primitives.<colorName>` (e.g. `Primitives.colorsSuccess600`)
+
+• **Spacing**  
+  `Figma.spacing.<token>` → `spacingNone`, `spacingSm`, `spacingMd`, `spacingLg`, `spacingXl`, `spacing2xl`, …
+
+• **Radius**  
+  `Figma.radius.<token>` → `radiusNone`, `radiusSm`, `radiusMd`, `radiusLg`, `radiusFull`, …
+
+• **Typography / Text Styles**  
+  – Numeric tokens: `Figma.typography.<fontSize|lineHeight|fontWeight|fontFamily>…`  
+  – Ready-made text styles: `Styles.<styleName>` (e.g. `Styles.displayLgRegular`, `Styles.textSmMedium`)
+
+Token getters are `const` and require no context, so you can import them directly without scanning files.
