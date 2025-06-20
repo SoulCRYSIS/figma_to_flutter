@@ -1,6 +1,5 @@
 import 'package:figma_to_flutter/design_tokens/figma.dart';
 import 'package:figma_to_flutter/screens/error_page_not_found_screen.dart';
-import 'package:figma_to_flutter/screens/toggles_showcase_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:figma_to_flutter/widgets/app_button.dart';
 import 'package:figma_to_flutter/screens/button_showcase_screen.dart';
@@ -29,7 +28,6 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(useMaterial3: true),
       routes: {
         '/buttons': (_) => const ButtonShowcaseScreen(),
-        '/toggles': (_) => const TogglesShowcaseScreen(),
         '/badges': (_) => const BadgeShowcaseScreen(),
         '/error': (_) => const ErrorPageNotFoundScreen(),
       },
@@ -54,13 +52,6 @@ class _HomePage extends StatelessWidget {
               size: ButtonSize.md,
               label: 'Open Button Showcase',
               onPressed: () => Navigator.pushNamed(context, '/buttons'),
-            ),
-            const SizedBox(height: 16),
-            AppButton(
-              variant: ButtonVariant.secondaryColor,
-              size: ButtonSize.md,
-              label: 'Open Toggle Showcase',
-              onPressed: () => Navigator.pushNamed(context, '/toggles'),
             ),
             const SizedBox(height: 16),
             AppButton(
