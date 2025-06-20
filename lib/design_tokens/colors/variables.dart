@@ -3278,7 +3278,7 @@ IColor get componentColorsComponentsTooltipsTooltipSupportingText => Primitives.
 @override
 IColor get colorsBackgroundBgQuaternary => Primitives.colorsGrayLightMode200;
 @override
-IColor get componentColorsComponentsButtonsPrimaryButtonPrimaryBg => Primitives.colorsWarning500;
+IColor get componentColorsComponentsButtonsPrimaryButtonPrimaryBg => Primitives.colorsBrand600;
 @override
 IColor get componentColorsComponentsButtonsPrimaryButtonPrimaryBgHover => Primitives.colorsBrand700;
 @override
@@ -4018,7 +4018,7 @@ IColor get componentColorsComponentsTooltipsTooltipSupportingText => Primitives.
 @override
 IColor get colorsBackgroundBgQuaternary => Primitives.colorsGrayDarkMode700;
 @override
-IColor get componentColorsComponentsButtonsPrimaryButtonPrimaryBg => Primitives.colorsWarning600;
+IColor get componentColorsComponentsButtonsPrimaryButtonPrimaryBg => Primitives.colorsBrand600;
 @override
 IColor get componentColorsComponentsButtonsPrimaryButtonPrimaryBgHover => Primitives.colorsBrand700;
 @override

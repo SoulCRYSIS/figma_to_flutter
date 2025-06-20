@@ -1,9 +1,23 @@
 import 'package:figma_to_flutter/design_tokens/figma.dart';
-import 'package:figma_to_flutter/widgets/custom_button.dart';
+import 'package:figma_to_flutter/icons/png_icons.dart';
+import 'package:figma_to_flutter/icons/svg_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:figma_to_flutter/widgets/app_button.dart';
+import 'package:figma_to_flutter/screens/button_showcase_screen.dart';
+import 'package:svg_icon_widget/svg_icon_widget.dart';
 
 void main() {
-  runApp(FigmaTheme(child: const MainApp()));
+  runApp(const _Root());
+}
+
+/// Wraps the whole app with [FigmaTheme] so design-tokens react to mode changes.
+class _Root extends StatelessWidget {
+  const _Root();
+
+  @override
+  Widget build(BuildContext context) {
+    return FigmaTheme(child: const MainApp());
+  }
 }
 
 class MainApp extends StatelessWidget {
@@ -12,66 +26,34 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            spacing: Figma.spacing.spacingXl.value,
-            children: [
-              Row(
-                spacing: Figma.spacing.spacingXl.value,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children:
-                    ButtonSize.values
-                        .map(
-                          (e) => CustomButton.primary(
-                            text: 'Button CTA',
-                            leftIcon: Icons.add,
-                            rightIcon: Icons.apple,
-                            onPressed: () {},
-                            size: e,
-                          ),
-                        )
-                        .toList(),
-              ),
-              Row(
-                spacing: Figma.spacing.spacingXl.value,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children:
-                    ButtonSize.values
-                        .map(
-                          (e) => CustomButton.secondary(
-                            text: 'Button CTA',
-                            leftIcon: Icons.add,
-                            rightIcon: Icons.apple,
-                            onPressed: () {},
-                            size: e,
-                          ),
-                        )
-                        .toList(),
-              ),
-              Row(
-                spacing: Figma.spacing.spacingXl.value,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children:
-                    ButtonSize.values
-                        .map(
-                          (e) => CustomButton.primaryError(
-                            text: 'Button CTA',
-                            leftIcon: Icons.add,
-                            rightIcon: Icons.apple,
-                            onPressed: () {},
-                            size: e,
-                          ),
-                        )
-                        .toList(),
-              ),
-            ],
-          ),
+      theme: ThemeData(useMaterial3: true),
+      routes: {'/buttons': (_) => const ButtonShowcaseScreen()},
+      home: const _HomePage(),
+    );
+  }
+}
+
+class _HomePage extends StatelessWidget {
+  const _HomePage();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Figma-to-Flutter Demo')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AppButton(
+              variant: ButtonVariant.primary,
+              size: ButtonSize.md,
+              label: 'Open Button Showcase',
+              onPressed: () => Navigator.pushNamed(context, '/buttons'),
+            ),
+            const SizedBox(height: 16),
+            IconButton(onPressed: () {}, icon: SvgIcon(SvgIcons.activity)),
+            Image.asset(PngIcons.fileTypeArchiveRarDefault),
+          ],
         ),
       ),
     );

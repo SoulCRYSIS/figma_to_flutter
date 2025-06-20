@@ -4,12 +4,12 @@ publish_to: 'none'
 version: 0.1.0
 
 environment:
-  sdk: ^3.7.2
+  sdk: ^3.8.1
 
 dependencies:
   flutter:
     sdk: flutter
-  figma_vars_to_dart: ^0.1.0
+  svg_icon_widget: ^0.0.1+1
 
 dev_dependencies:
   flutter_test:
@@ -18,3 +18,17 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/icons/png/
+    - assets/icons/png/Featured/
+    - assets/icons/png/File type/
+    - assets/icons/png/File type/Archive/
+    - assets/icons/png/File type/Default/
+    - assets/icons/png/File type/Design/
+    - assets/icons/png/File type/Development/
+    - assets/icons/png/File type/Document/
+    - assets/icons/png/File type/Image/
+    - assets/icons/png/File type/Media/
+    - assets/icons/png/File type/Simple/
+    - assets/icons/svg/
+
