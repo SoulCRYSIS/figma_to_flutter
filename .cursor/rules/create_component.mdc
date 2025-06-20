@@ -1,0 +1,29 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+I will provide you a link to a Figma frame and brief descriptions, use that to create a widget with these guidelines.
+1. **Prefer using design tokens**
+    - If code from MCP use token variables, you should do the same
+    - All tokens are store inside lib/design_tokens
+        - To reduce time using to grep variables, just assume variables exist then fix them later
+        - Usage examples
+            - Colors: `Figma.colorModes.colorsBackgroundBgActive`
+            - Typography (fontSize, fontWeight, etc.): `Figma.typography.fontSizeTextLg.value`
+            - Spacing: `Figma.spacing.spacingLg`
+            - Border radius: `Figma.radius.radiusSm`
+            - Width: `Figma.widths.widthSm`
+            - Container (screen padding, max width, etc.): `Figma.containers.containerPaddingMobile`
+2. **Prefer reuse widgets**
+    - If code from MCP use a reusable widget, you should do the same
+    - All reusable widgets are store inside lib/widgets
+    - If you cannot find it in there, notice me, maybe I forgot to add
+3. **Required Documentation**
+    - Figma Reference: Always include the Figma frame URL or node ID
+    - Purpose: Brief description of component's function and usage
+    - Example Usage: Code snippet showing typical implementation
+    - Parameters: Document all public parameters and their expected values
+4. **Follow best practices**
+    - Consider widget size and complexity for performance
+    - Make it easy to be use or modify later

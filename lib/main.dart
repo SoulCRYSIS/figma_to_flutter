@@ -1,11 +1,9 @@
 import 'package:figma_to_flutter/design_tokens/figma.dart';
-import 'package:figma_to_flutter/icons/png_icons.dart';
-import 'package:figma_to_flutter/icons/svg_icons.dart';
 import 'package:figma_to_flutter/screens/toggles_showcase_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:figma_to_flutter/widgets/app_button.dart';
 import 'package:figma_to_flutter/screens/button_showcase_screen.dart';
-import 'package:svg_icon_widget/svg_icon_widget.dart';
+import 'package:figma_to_flutter/screens/badge_showcase_screen.dart';
 
 void main() {
   runApp(const _Root());
@@ -31,6 +29,7 @@ class MainApp extends StatelessWidget {
       routes: {
         '/buttons': (_) => const ButtonShowcaseScreen(),
         '/toggles': (_) => const TogglesShowcaseScreen(),
+        '/badges': (_) => const BadgeShowcaseScreen(),
       },
       home: const _HomePage(),
     );
@@ -60,6 +59,13 @@ class _HomePage extends StatelessWidget {
               size: ButtonSize.md,
               label: 'Open Toggle Showcase',
               onPressed: () => Navigator.pushNamed(context, '/toggles'),
+            ),
+            const SizedBox(height: 16),
+            AppButton(
+              variant: ButtonVariant.tertiaryGray,
+              size: ButtonSize.md,
+              label: 'Open Badge Showcase',
+              onPressed: () => Navigator.pushNamed(context, '/badges'),
             ),
           ],
         ),
