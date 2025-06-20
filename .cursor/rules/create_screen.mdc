@@ -3,7 +3,7 @@ description:
 globs: 
 alwaysApply: false
 ---
-I will provide you a link to a Figma frame and brief descriptions, use that to create a widget with these guidelines.
+I will provide you a link to a Figma frame and brief descriptions, use that to create a screen with these guidelines.
 
 1. **Use MCP tools**
     You should use Figma MCP tools `get_code` and `get_image` for precise reference.
@@ -24,9 +24,12 @@ I will provide you a link to a Figma frame and brief descriptions, use that to c
     - If you cannot find it in there, notice me, maybe I forgot to add
 4. **Required Documentation**
     - Figma Reference: Always include the Figma frame URL or node ID
-    - Purpose: Brief description of component's function and usage
-    - Example Usage: Code snippet showing typical implementation
-    - Parameters: Document all public parameters and their expected values
+    - Purpose: Brief description of the screen
 5. **Follow best practices**
     - Consider widget size and complexity for performance
     - Make it easy to be use or modify later
+6. **Handle basic logic**
+    - Handle ephemeral state if you can, such as radioGroup, tabIndex, etc.
+    - You don't need to handle api connection or anything that you don't have information. Maybe use mock empty function.
+7. **Strictly follow design**
+    Make sure you use the same padding, color, alignment and everything as the figma

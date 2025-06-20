@@ -1,4 +1,5 @@
 import 'package:figma_to_flutter/design_tokens/figma.dart';
+import 'package:figma_to_flutter/screens/error_page_not_found_screen.dart';
 import 'package:figma_to_flutter/screens/toggles_showcase_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:figma_to_flutter/widgets/app_button.dart';
@@ -30,6 +31,7 @@ class MainApp extends StatelessWidget {
         '/buttons': (_) => const ButtonShowcaseScreen(),
         '/toggles': (_) => const TogglesShowcaseScreen(),
         '/badges': (_) => const BadgeShowcaseScreen(),
+        '/error': (_) => const ErrorPageNotFoundScreen(),
       },
       home: const _HomePage(),
     );
@@ -66,6 +68,13 @@ class _HomePage extends StatelessWidget {
               size: ButtonSize.md,
               label: 'Open Badge Showcase',
               onPressed: () => Navigator.pushNamed(context, '/badges'),
+            ),
+            const SizedBox(height: 16),
+            AppButton(
+              variant: ButtonVariant.tertiaryGray,
+              size: ButtonSize.md,
+              label: 'Open Error Screen',
+              onPressed: () => Navigator.pushNamed(context, '/error'),
             ),
           ],
         ),
