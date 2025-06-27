@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:figma_to_flutter/widgets/app_button.dart';
 import 'package:figma_to_flutter/screens/button_showcase_screen.dart';
 import 'package:figma_to_flutter/screens/badge_showcase_screen.dart';
+import 'package:figma_to_flutter/screens/dropdown_showcase_screen.dart';
 
 void main() {
   runApp(const _Root());
@@ -29,6 +30,7 @@ class MainApp extends StatelessWidget {
       routes: {
         '/buttons': (_) => const ButtonShowcaseScreen(),
         '/badges': (_) => const BadgeShowcaseScreen(),
+        '/dropdowns': (_) => const DropdownShowcaseScreen(),
         '/error': (_) => const ErrorPageNotFoundScreen(),
       },
       home: const _HomePage(),
@@ -59,6 +61,13 @@ class _HomePage extends StatelessWidget {
               size: ButtonSize.md,
               label: 'Open Badge Showcase',
               onPressed: () => Navigator.pushNamed(context, '/badges'),
+            ),
+            const SizedBox(height: 16),
+            AppButton(
+              variant: ButtonVariant.tertiaryGray,
+              size: ButtonSize.md,
+              label: 'Open Dropdown Showcase',
+              onPressed: () => Navigator.pushNamed(context, '/dropdowns'),
             ),
             const SizedBox(height: 16),
             AppButton(
